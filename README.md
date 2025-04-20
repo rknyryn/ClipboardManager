@@ -22,42 +22,20 @@ A modern, efficient clipboard manager for macOS built with SwiftUI. This applica
 ## Installation
 
 1. Clone the repository
-2. Open `clipboard_app.xcodeproj` in Xcode
+2. Open `ClipboardManager.xcodeproj` in Xcode
 3. Build and run the project (⌘+R)
 
-## Architecture
-
-The application follows the MVVM (Model-View-ViewModel) architecture pattern:
-
-### Models
-- `ClipboardItem`: Represents a clipboard entry with properties for content, favorites, and timestamps
-
-### Views
-- `MainView`: The primary interface showing the clipboard history and search
-- `ClipboardRowView`: Individual row component for clipboard items
-
-### ViewModels
-- `ClipboardViewModel`: Manages clipboard monitoring, data filtering, and clipboard operations
-
-## Features in Detail
-
-### Clipboard Monitoring
-- Continuously monitors system clipboard for changes
-- Updates in real-time (1-second interval)
-- Prevents duplicate entries
-
-### Search Functionality
+## Search Functionality
 - Real-time search through clipboard history
 - Case-insensitive search
 - Instant filtering as you type
 
-### Item Management
-- Favorite important items for quick access
+## Item Management
 - Delete unwanted entries
 - One-click copy back to clipboard
-- Items sorted by favorites and timestamp
+- Items sorted by timestamp
 
-### User Interface
+## User Interface
 - Clean, minimal design
 - Menu bar integration for easy access
 - Hover effects for better interaction
