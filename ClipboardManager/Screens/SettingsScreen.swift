@@ -5,7 +5,6 @@ struct SettingsScreen: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            // Otomatik Başlangıç Ayarı
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "info.circle")
                     .font(.system(size: 20))
@@ -41,7 +40,7 @@ struct SettingsScreen: View {
                     Link("Kaan Yarayan", destination: URL(string: "https://github.com/rknyryn")!)
                         .font(.footnote)
                         .foregroundColor(.secondary)
-                        .underline(false) // istersen altı çizgili de yapabiliriz
+                        .underline(false)
                 }
                 
                 HStack(spacing: 6) {

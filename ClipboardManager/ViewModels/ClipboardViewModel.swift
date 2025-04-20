@@ -10,19 +10,16 @@ class ClipboardViewModel: ObservableObject {
     private var timer: Timer?
 
     init() {
-        // Başlangıçta mevcut pano içeriğini kontrol et
         if let initialContent = pasteboard.string(forType: .string) {
             let newItem = ClipboardItem(content: initialContent)
             items.insert(newItem, at: 0)
             lastContent = initialContent
         }
         
-        // Pano içeriği değiştiğinde kontrol et
         startMonitoringClipboard()
     }
     
     func startMonitoringClipboard() {
-        // Timer ile her saniye pano kontrolü yapılacak
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.checkClipboard()
         }
@@ -68,7 +65,6 @@ class ClipboardViewModel: ObservableObject {
     }
     
     deinit {
-        // Timer'ı temizle
         timer?.invalidate()
     }
 }

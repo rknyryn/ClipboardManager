@@ -20,8 +20,6 @@ struct ClipboardRowView: View {
                     onDelete?()
                 }) {
                     Image(systemName: "trash")
-                        .resizable()
-                        .frame(width: 14, height: 14)
                 }
                 .buttonStyle(BorderlessButtonStyle())
             }
