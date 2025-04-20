@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		65FE624F2DB522DB003C1181 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 65FE624E2DB522D5003C1181 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		65FE62182DB52053003C1181 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		65FE62092DB52051003C1181 /* ClipboardManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClipboardManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65FE62172DB52053003C1181 /* ClipboardManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClipboardManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65FE62212DB52053003C1181 /* ClipboardManagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClipboardManagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65FE624E2DB522D5003C1181 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		65FE62002DB52051003C1181 = {
 			isa = PBXGroup;
 			children = (
+				65FE624E2DB522D5003C1181 /* README.md */,
 				65FE620B2DB52051003C1181 /* ClipboardManager */,
 				65FE621A2DB52053003C1181 /* ClipboardManagerTests */,
 				65FE62242DB52053003C1181 /* ClipboardManagerUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65FE624F2DB522DB003C1181 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
