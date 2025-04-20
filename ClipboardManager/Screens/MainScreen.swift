@@ -72,7 +72,7 @@ struct MainScreen: View {
             return
         }
 
-        let settingsView = SettingsView()
+        let settingsView = SettingsScreen()
         let hostingController = NSHostingController(rootView: settingsView)
 
         let window = NSWindow(
