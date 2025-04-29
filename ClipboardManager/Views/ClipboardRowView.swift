@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ClipboardRowView: View {
     let item: ClipboardItem
+    @ObservedObject var viewModel: ClipboardViewModel
     var onDelete: (() -> Void)? = nil
     var onCopy: (() -> Void)? = nil
     
@@ -10,6 +11,12 @@ struct ClipboardRowView: View {
 
     var body: some View {
         HStack {
+            if item.isFavorite {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+                    .help("Favori")
+            }
+            
             Text(item.content)
                 .lineLimit(1)
             
@@ -17,9 +24,19 @@ struct ClipboardRowView: View {
             
             if isHovered {
                 Button(action: {
+                    viewModel.toggleFavorite(item)
+                }) {
+                    Image(systemName: item.isFavorite ? "star.fill" : "star")
+                        .foregroundColor(item.isFavorite ? .yellow : .gray)
+                        .help(item.isFavorite ? "Favorilerden kaldır" : "Favorilere ekle")
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                
+                Button(action: {
                     onDelete?()
                 }) {
                     Image(systemName: "trash")
+                        .help("Sil")
                 }
                 .buttonStyle(BorderlessButtonStyle())
             }

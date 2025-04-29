@@ -33,8 +33,11 @@ struct MainScreen: View {
                     ForEach(viewModel.filteredItems()) { item in
                         ClipboardRowView(
                             item: item,
+                            viewModel: viewModel,
                             onDelete: {
-                                viewModel.delete(item)
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    viewModel.delete(item)
+                                }
                             },
                             onCopy: {
                                 viewModel.copyToClipboard(item.content)
@@ -42,10 +45,12 @@ struct MainScreen: View {
                         )
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets())
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                 }
                 .listStyle(PlainListStyle())
                 .background(Color.clear)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.filteredItems())
             }
             
             if viewModel.items.isEmpty == false {

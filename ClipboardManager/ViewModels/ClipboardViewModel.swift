@@ -56,6 +56,12 @@ class ClipboardViewModel: ObservableObject {
         }
     }
     
+    func toggleFavorite(_ item: ClipboardItem) {
+        if let index = items.firstIndex(where: { $0.id == item.id }) {
+            items[index].isFavorite.toggle()
+        }
+    }
+    
     func delete(_ item: ClipboardItem) {
         items.removeAll { $0.id == item.id }
     }
