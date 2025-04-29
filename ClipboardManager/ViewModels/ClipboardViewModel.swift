@@ -67,7 +67,7 @@ class ClipboardViewModel: ObservableObject {
     }
     
     func deleteAll() {
-        items.removeAll()
+        items.removeAll { !$0.isFavorite }
     }
     
     deinit {
