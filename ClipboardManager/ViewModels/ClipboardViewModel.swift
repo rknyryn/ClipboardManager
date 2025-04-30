@@ -1,43 +1,54 @@
 import Foundation
 import AppKit
+import Combine
 
-class ClipboardViewModel: ObservableObject {
-    @Published var items: [ClipboardItem] = []
+protocol ClipboardViewModelProtocol: ObservableObject {
+    var items: [ClipboardItem] { get }
+    var searchText: String { get set }
+    func toggleFavorite(_ item: ClipboardItem)
+    func delete(_ item: ClipboardItem)
+    func deleteAll()
+    func copyToClipboard(_ content: String)
+    func checkClipboard()
+}
+
+final class ClipboardViewModel: ClipboardViewModelProtocol {
+    @Published private(set) var items: [ClipboardItem] = []
     @Published var searchText: String = ""
     
+    private let storageService: StorageServiceProtocol
+    private let pasteboard: NSPasteboard
     private var lastContent: String = ""
-    private let pasteboard = NSPasteboard.general
     private var timer: Timer?
-    private let favoritesURL: URL
+    private var cancellables = Set<AnyCancellable>()
     
-    init() {
-        // Favori dosyasının URL'sini oluştur
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        favoritesURL = documentsDirectory.appendingPathComponent("favorites.json")
+    init(
+        storageService: StorageServiceProtocol = StorageService(),
+        pasteboard: NSPasteboard = .general
+    ) {
+        self.storageService = storageService
+        self.pasteboard = pasteboard
         
-        // Favori öğeleri yükle
+        setupInitialContent()
         loadFavorites()
-        
+        startMonitoringClipboard()
+        setupBindings()
+    }
+    
+    private func setupInitialContent() {
         if let initialContent = pasteboard.string(forType: .string) {
             let newItem = ClipboardItem(content: initialContent)
             items.insert(newItem, at: 0)
             lastContent = initialContent
         }
-        
-        startMonitoringClipboard()
     }
     
     private func loadFavorites() {
         do {
-            if FileManager.default.fileExists(atPath: favoritesURL.path) {
-                let data = try Data(contentsOf: favoritesURL)
-                let favorites = try JSONDecoder().decode([ClipboardItem].self, from: data)
-                
-                // Favori öğeleri items listesine ekle
-                for favorite in favorites {
-                    if !items.contains(where: { $0.id == favorite.id }) {
-                        items.append(favorite)
-                    }
+            let favorites = try storageService.loadFavorites()
+            favorites.forEach { favorite in
+                if !items.contains(where: { $0.id == favorite.id }) {
+                    items.append(favorite)
                 }
             }
         } catch {
@@ -48,14 +59,22 @@ class ClipboardViewModel: ObservableObject {
     private func saveFavorites() {
         do {
             let favorites = items.filter { $0.isFavorite }
-            let data = try JSONEncoder().encode(favorites)
-            try data.write(to: favoritesURL)
+            try storageService.saveFavorites(favorites)
         } catch {
             print("Favori öğeler kaydedilirken hata oluştu: \(error)")
         }
     }
     
-    func startMonitoringClipboard() {
+    private func setupBindings() {
+        $items
+            .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.saveFavorites()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func startMonitoringClipboard() {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.checkClipboard()
         }
@@ -95,18 +114,15 @@ class ClipboardViewModel: ObservableObject {
     func toggleFavorite(_ item: ClipboardItem) {
         if let index = items.firstIndex(where: { $0.id == item.id }) {
             items[index].isFavorite.toggle()
-            saveFavorites()
         }
     }
     
     func delete(_ item: ClipboardItem) {
         items.removeAll { $0.id == item.id }
-        saveFavorites()
     }
     
     func deleteAll() {
         items.removeAll { !$0.isFavorite }
-        saveFavorites()
     }
     
     deinit {
