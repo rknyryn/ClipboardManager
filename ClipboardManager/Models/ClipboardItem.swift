@@ -1,6 +1,6 @@
 import Foundation
 
-struct ClipboardItem: Identifiable, Equatable {
+struct ClipboardItem: Identifiable, Equatable, Codable {
     let id: UUID
     let content: String
     var isFavorite: Bool = false
@@ -10,5 +10,12 @@ struct ClipboardItem: Identifiable, Equatable {
         self.id = UUID()
         self.content = content
         self.dateCopied = Date()
+    }
+    
+    init(id: UUID, content: String, isFavorite: Bool, dateCopied: Date) {
+        self.id = id
+        self.content = content
+        self.isFavorite = isFavorite
+        self.dateCopied = dateCopied
     }
 }
